@@ -1,0 +1,81 @@
+<?php require('header.phtml') ?>
+</div>
+<div class="subnavbar">
+  <div class="subnavbar-inner">
+    <div class="container">
+      <ul class="mainnav">
+        <li><a data-toggle="tab" href="#information"><i class="fa fa fa-user fa-4"aria-hidden="true"></i><span>Profile</span></a></li>
+        <li><a data-toggle="tab" href="#settings"><i class="fa fa-list-alt fa-4"aria-hidden="true"></i><span>Orders</span></a></li>
+        <li><a data-toggle="tab" href="#email"><i class="fa fa-envelope fa-4"aria-hidden="true"></i><span>Messages</span></a></li>
+      </ul>
+    </div> <!-- /container -->
+  </div> <!-- /subnavbar-inner -->
+</div> <!-- /subnavbar -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-md-8 user-details">
+      <div class="user-image">
+        <img src="img/avatar.png" alt="name" title="name" class="img-circle">
+      </div>
+      <div class="user-info-block">
+        <div class="user-heading">
+          <h3><?php echo $userRepository->first_name ?></h3>
+          <span class="help-block">MANCHESTER, UK</span>
+        </div>
+
+        <div class="user-body panel panel-default">
+          <div class="tab-content">
+            <div id="information" class="tab-pane active">
+              <h4>Account Information</h4>
+              <div class="col-sm-5 col-xs-6 tital ">First Name:</div>
+              <div class="col-sm-7 col-xs-6 "><?php echo $userRepository->first_name ?></div>
+              <div class="clearfix"></div>
+              <div class="bot-border"></div>
+
+
+              <div class="col-sm-5 col-xs-6 tital " >Last Name:</div><div class="col-sm-7 col-xs-6 "><?php echo $userRepository->last_name ?></div>
+              <div class="clearfix"></div>
+              <div class="bot-border"></div>
+
+              <div class="col-sm-5 col-xs-6 tital " >Email:</div><div class="col-sm-7"> <?php echo $userRepository->email ?></div>
+              <div class="clearfix"></div>
+              <div class="bot-border"></div>
+
+              <div class="col-sm-5 col-xs-6 tital " >Address:</div><div class="col-sm-7"><?php echo $userRepository->address ?></div>
+              <div class="clearfix"></div>
+              <div class="bot-border"></div>
+
+              <div class="col-sm-5 col-xs-6 tital " >Member since:</div><div class="col-sm-7"><?php echo date("D j M Y",strtotime($userRepository->reg_date)) ?></div>
+
+              <div class="clearfix"></div>
+              <div class="bot-border"></div>
+
+              <div class="col-sm-5 col-xs-6 tital " >Mobile Number:</div><div class="col-sm-7"><?php echo $userRepository->mobile_number?></div>
+
+              <div class="clearfix"></div>
+              <div class="bot-border"></div>
+
+            </div>
+            <div id="settings" class="tab-pane">
+              <h4>Orders</h4>
+              <?php require('orders_list.php') ?>
+            </div>
+            <div id="email" class="tab-pane">
+              <h4>Thanks :)</h4>
+              <p>From: T-Mania</p>
+              <p>Message</p>
+              <p>Just wanted to send a quick note to say thanks for shopping with us.
+                Glad we were able to help you find the perfect outfit.
+                We hope to see you again soon.
+                Best Wishes, <span class="help-block">T-Mania Team.</span>
+                <hr>
+              </div>
+              <div id="events" class="tab-pane">
+                <h4>Events</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<?php require('footer.phtml') ?>

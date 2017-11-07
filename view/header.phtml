@@ -1,0 +1,124 @@
+<?php date_default_timezone_set('Europe/London');?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="styles/app.css">
+  </head>
+<body role="document">
+  <!-- Content Section -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"> T-Mania</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+          <li><a href="register.php">Account</a></li>
+          <?php
+          require_once('Models/UserRepository.php');
+           if(isset($_SESSION['user_id'])){
+            $user = new UserRepository();
+            $user->getUserDetails($_SESSION["user_id"]);
+              if ($user->hasPermission("add product")){?>
+          <li><a href="dashboard.php">Dashboard</a></li>
+          <?php }}?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+ <!--  * *  * *  * -->
+ <li class="dropdown">
+   <?php if(!isset($_SESSION['user_id'])):?>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b> Sign in</b> <span class="caret"></span></a>
+     		<ul id="login-dp" class="dropdown-menu">
+ 				<li>
+ 					 <div class="row">
+ 							<div class="col-md-12">
+ 								<!-- Login -->
+ 								<div class="social-buttons">
+                     <div class="iconSpecial"><i class="glyphicon glyphicon-user"></i>Sign in</div>
+ 								</div>
+ 								 <form class="form" role="form" method="post" action="signin.php" accept-charset="UTF-8" id="login-nav">
+
+ 										<div class="form-group">
+ 											 <label class="sr-only" for="exampleInputEmail2">Email</label>
+ 											 <input type="email" name="email" class="form-control" id="exampleInputEmail2" placeholder="email" required>
+ 										</div>
+ 										<div class="form-group">
+ 											 <label class="sr-only" for="exampleInputPassword2">Password</label>
+ 											 <input type="password" name="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                       <div class="help-block text-right"><a href="">Forgot your password ?</a></div>
+ 										</div>
+ 										<div class="form-group">
+                      <input type="submit" name="submit" class="btn btn-primary btn-block" value="Sign"/>
+ 											<!-- <button type="submit" class="btn btn-primary btn-block">Sign in</button>-->
+ 										</div>
+ 										<div class="checkbox text-dark">
+ 											 <label>
+ 											 <input type="checkbox"> Keep me signed in
+ 											 </label>
+ 										</div>
+ 								 </form>
+ 							</div>
+ 					 </div>
+ 				</li>
+ 			</ul>
+    <?php else: ?>
+  <ul class="nav navbar-nav">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['userData']['first_name']; ?> <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="profile.php">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        <a href="logout.php">Logout<span class="glyphicon glyphicon-log-out pull-right"></span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<?php endif; ?>
+  </li>
+  <form class="navbar-form navbar-right" action="search.php" method="post">
+      <input type="text" id="q" onkeyup="auto()" name="q"class="form-control">
+      <input type="hidden"><i class="glyphicon glyphicon-search"></i>
+      <div id="result"></div>
+  </form>
+
+    <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-2x fa-shopping-cart"></i><label id="cart-badge" class="badge badge-warning"><?php echo $_SESSION['cart_contents']['total_items'];?></label>
+               <span class="caret"></span></a>
+            <ul class="dropdown-menu " role="menu">
+            <?php $cartS = $_SESSION['cart_contents'];
+                unset($cartS['total_items']);
+                unset($cartS['cart_total']);
+            ?>
+                <?php foreach($cartS as $k){ ?>
+                  <?php echo "&nbsp;".$k['qty']. ' x '. $k['name'].'<span class="label label-danger">£ ' . $k['price'].'</span>';?>
+                  <li class="divider"></li>
+                  <?php }?>
+                  <li><a class="text-center" href="viewCart.php">View Cart</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+ <div class="container">

@@ -1,0 +1,44 @@
+<?php require('header.phtml') ?>
+<h3>Search Results for: "<?php echo $search ?> "</h3>
+ <div class="row">
+   <?php
+
+   if($view->productRepository == null){
+    echo 'Your search "'.$search . '" did not match any documents.
+    <p>Suggestions:</p>
+    <p>Make sure that all words are spelled correctly.<p>
+    <p>Using more general terms.</p>';
+
+   }else{
+    foreach ($view->productRepository as $key => $value) { ?>
+     <!-- BEGIN PRODUCTS -->
+     <div class="col-md-3 col-sm-6">
+       <span class="thumbnail">
+         <a href="<?php echo 'page.php?id='.$value['id'];?>">
+           <img src="/img/<?php echo $value['image_name'];?>" class="img-responsive" alt="product">
+         </a>
+           <h4><?php echo $value['name'];?></h4>
+           <div class="ratings">
+                   <span class="glyphicon glyphicon-star"></span>
+                   <span class="glyphicon glyphicon-star"></span>
+                   <span class="glyphicon glyphicon-star"></span>
+                   <span class="glyphicon glyphicon-star"></span>
+                   <span class="glyphicon glyphicon-star-empty"></span>
+               </div>
+           <p><?php echo $value['description'];?></p>
+           <hr class="line">
+           <div class="row">
+             <div class="col-md-12 col-sm-6 text-center">
+               <p class="price">£<?php echo $value['price'];?></p>
+             </div>
+             <div class="col-md-6 col-sm-6">
+                  <a class="btn btn-success col-md-12 col-sm-12" href="cart.php?action=addToCart&id=<?php echo $value['id'];?>">Add to cart</a>
+           </div>
+       </span>
+     </div>
+   <?php }} ?>
+ </div>
+
+
+
+<?php require('footer.phtml') ?>

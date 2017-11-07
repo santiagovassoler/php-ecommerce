@@ -1,0 +1,59 @@
+<?php session_start();?>
+<?php require('view/header.phtml') ?>
+<?php require('view/dashboardHeader.phtml') ?>
+
+
+          <h2 class="sub-header">Product List</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Description</th>
+                  <th>Cat ID</th>
+                  <th>Stock qty</th>
+                  <th>Created at</th>
+                  <th>Image</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($pagination as $p) {
+                    foreach ($p as $products) { ?>
+
+                  <?php  echo
+                        '<tr> <td>' . $products->getProductID().
+                        '</td><td>' . $products->getProductName().
+                        '</td><td>' . $products->getPrice().
+                        '</td><td>' . $products->getDescription().
+                        '</td><td>' . $products->getCategoryID().
+                        '</td><td>' . $products->getStockQty().
+                        '</td><td>' . date("D j M G:i:s T Y",strtotime($products->getTimestamp())).
+                        '</td><td>' .'<img src="/img/'.$products->getImageName().'" class="img-rounded" alt="" width="100" height="100">'.
+                        '</td><td>' .'<a href="details.php?id='.$products->getProductID().'"class="btn btn-warning">Update</a>'.//.'<a href="details.php?'.$products->getProductID().'">Edit</a>'.
+                        '</td><td>' .'<button onclick="DeleteProduct(' . $products->getProductID() . ')" class="btn btn-danger">Delete</button>'.
+                        '</td></tr>'.'<br>';
+                      }
+                    }
+                    echo '</tbody>'.'</table>';
+                    foreach ($numbers as $n) {
+
+                      echo '<ul class="pagination">';
+
+                      if($_GET['page'] == $n){
+                        echo '<li class="active">' ;
+                      } else{
+                        echo '<li>' ;
+                      }
+                        echo '<a href="dashboard.php?page=' . $n . '">'. $n .'</a>'. ' ' .
+                            '</li>' ;
+                      echo '</ul>' ;
+                    }
+                    ?>
+              </tbody>
+            </table>
+          </div>
+<?php require('view/footer.phtml') ?>

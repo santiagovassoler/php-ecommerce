@@ -1,0 +1,83 @@
+<?php require('header.phtml') ?>
+<?php
+// If cart is empty
+if (!isset($_SESSION['cart']) || (count($_SESSION['cart']) == 0)) {
+  ?>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="glyphicon glyphicon-shopping-cart"></span> My Cart</h3>
+    </div>
+    <div class="panel-body">
+      <h3>Your cart is empty..</h3>
+    </div>
+  </div>
+  <?php
+  // If cart is not empty
+} else {
+  ?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <span class="glyphicon glyphicon-shopping-cart"></span> My Cart
+      <a href='/checkout.php' class="btn btn-success btn-xs pull-right"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>  Check Out</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <tr class="tableactive">
+          <th>Product</th>
+          <th>Price</th>
+          <th>Qty.</th>
+          <th>Tot.</th>
+        </tr>
+        <?php
+        // List cart items
+        // store order detail in HTML
+        $OrderDetail = '
+        <table border=1 cellpadding=5 cellspacing=5>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>';
+        $total = 0;
+        $linenumber = 0;
+        foreach($_SESSION['cart'] as $cart_item)
+        {
+          if($cart_item['quantity']!=0) {
+            $pricedecimal = str_replace(",",".",$cart_item['price']);
+            $qtydecimal = str_replace(",",".",$cart_item['quantity']);
+            $pricedecimal = (float)$pricedecimal;
+            $qtydecimal = (float)$qtydecimal;
+            $totaldecimal = $pricedecimal*$qtydecimal;
+            $OrderDetail .="<tr><td>".$cart_item['item']."</td><td>".$cart_item['price']."</td><td>".$cart_item['quantity']."</td><td>".$totaldecimal."</td></tr>";
+            echo
+            "
+            <tr class='tablerow'>
+              <td><a href=\"?remove=".$linenumber."\" class=\"btn btn-danger btn-xs\" onclick=\"return confirm('Are you sure?')\">X</a> ".$cart_item['item']."</td>
+              <td>".$cart_item['price']."</td>
+              <td>".$cart_item['quantity']."</td>
+              <td>".$totaldecimal."</td>
+            </tr>
+            ";
+            $total += $totaldecimal;
+            //$its += $qtydecimal;
+          }
+          $linenumber++;
+        }
+        $_SESSION['cart']['total'] = $total;
+        $OrderDetail .="<tr><td>Total</td><td></td><td></td><td>".$total."</td></tr></tbody></table>";
+        ?>
+        <tr class='tableactive'>
+          <td><a href='?clear' class='btn btn-danger btn-xs' onclick="return confirm('Are you sure?')">Empty Cart</a></td>
+          <td colspan='2' class='text-right'>Total</td>
+          <td><?php echo $total;?></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+<?php }?>
+
+  <?php require('footer.phtml') ?>

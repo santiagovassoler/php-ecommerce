@@ -1,0 +1,57 @@
+<?php session_start();?>
+<?php require('view/header.phtml') ?>
+<?php require('view/dashboardHeader.phtml') ?>
+
+
+          <h2 class="sub-header">User List</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>first name</th>
+                  <th>Last name</th>
+                  <th>email</th>
+                  <th>Address</th>
+                  <th>Mobile Number</th>
+                  <th>Reg date</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($pagination as $p) {
+                    foreach ($p as $user) { ?>
+
+                  <?php  echo
+                        '<tr> <td>' . $user->getUserID().
+                        '</td><td>' . $user->getFirstName().
+                        '</td><td>' . $user->getLastName().
+                        '</td><td>' . $user->getEmail().
+                        '</td><td>' . $user->getAddress().
+                        '</td><td>' . $user->getMobileNumber().
+                        '</td><td>' . date("D j M G:i:s T Y",strtotime($user->getRegDate())).
+                        '</td><td>' .'<a href="user_details.php?id='.$user->getUserID().'"class="btn btn-warning">Update</a>'.//.'<a href="details.php?'.$user->getProductID().'">Edit</a>'.
+                        '</td><td>' .'<button onclick="DeleteUser(' . $user->getUserID() . ')" class="btn btn-danger">Delete</button>'.
+                        '</td></tr>'.'<br>';
+                      }
+                    }
+                    echo '</tbody>'.'</table>';
+                    foreach ($numbers as $n) {
+
+                      echo '<ul class="pagination">';
+
+                      if($_GET['page'] == $n){
+                        echo '<li class="active">' ;
+                      } else{
+                        echo '<li>' ;
+                      }
+                        echo '<a href="dashboard.php?page=' . $n . '">'. $n .'</a>'. ' ' .
+                            '</li>' ;
+                      echo '</ul>' ;
+                    }
+                    ?>
+              </tbody>
+            </table>
+          </div>
+<?php require('view/footer.phtml') ?>

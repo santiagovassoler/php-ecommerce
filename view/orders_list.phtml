@@ -1,0 +1,23 @@
+<?php
+$newArray=array();
+foreach($view->userRepository as $val){
+  $newKey=$val['order_id'];
+  $newArray[$newKey][]=$val;
+}
+foreach ($newArray as $key => $value) {?>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <?php echo date("D j M Y",strtotime($value[0]["order_date"]))?><span class="label label-success">  ORDER # <? echo $key ?></span>
+      <span class="label label-warning"><?php echo $value[0]['status']?></span>
+      <span class="label label-danger pull-right"> TOTAL: £ <?php echo $value[0]["order_total"]?></span>
+    </div>
+    <div class="panel-body">
+      <?php foreach ($value as $key => $v) {?>
+        <ul class="list-inline">
+          <li class="list-inline-item"><img class="image-responsive"src="img/<?php echo $v['image_name']; ?>"></li>
+          <li class="list-inline-item"><?php echo $v['name']?></br><span class="label label-info"><?php echo $v['item_qty']?> X £<?php echo $v['price'] ?></span></li>
+        </ul>
+        <?php } ?>
+      </div>
+    </div>
+    <?php } ?>
